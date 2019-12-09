@@ -1,0 +1,23 @@
+
+refine_clean <- separate(refine_clean, 'Product code / number', sep ="-", into=c("product_code", "product_number"))
+
+refine_clean <- mutate(refine_clean, product_category = product_code)
+
+refine_clean <- unite(refine_original, address, city, country, col="full_address", sep=",")
+
+refine_clean <- arrange(refine_clean, company)
+
+refine_clean[1:7, 1] = "akzo"
+refine_clean[8:16, 1] = "philips"
+refine_clean[17:20, 1] = "unilever"
+refine_clean[21:25, 1] = "van houten"
+
+refine_clean$product_category[substring(refine_clean$product_code, 1,1)=='x'] <- 'Laptop'
+refine_clean$product_category[substring(refine_clean$product_code, 1, 1)=='q'] <- 'Tablet'
+refine_clean$product_category[substring(refine_clean$product_code, 1,1)=='p'] <- 'Smartphone'
+refine_clean$product_category[substring(refine_clean$product_code, 1, 1)=='v'] <- 'TV'
+
+refine_clean <- dummy_cols(refine_clean, select_columns = 'company', remove_selected_columns = FALSE)
+
+refine_clean <- dummy_cols(refine_clean, select_columns = 'product_category', remove_selected_columns = FALSE)
+
